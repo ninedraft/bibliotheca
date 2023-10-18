@@ -1,0 +1,32 @@
+{{ define "authors" }}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Authors</title>
+</head>
+
+<body>
+    <h1>Authors</h1>
+    <a href="/books">Books</a>
+    <a href="/authors/new">Add author</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Bio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range $author := . }}
+            <tr>
+                <td>{{ $author.Name }}</td>
+                <td>{{ $author.Bio }}</td>
+            </tr>
+            {{ end }}
+        </tbody>
+    </table>
+</body>
+
+</html>
+{{ end }}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Create Author</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+            margin-right: 1em;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        form {
+            margin-bottom: 1em;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 0.5em;
+        }
+
+        input[type="text"],
+        textarea {
+            padding: 0.5em;
+            border-radius: 0.25em;
+            border: 1px solid #ccc;
+            margin-bottom: 1em;
+            width: 100%;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 0.25em;
+            padding: 0.5em 1em;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0069d9;
+        }
+
+        .error {
+            color: red;
+            margin-top: 0.5em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Create Author</h1>
+    <a href="/books">Books</a>
+    <a href="/authors">Authors</a>
+    <form method="POST" action="/authors">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="bio">Bio:</label>
+        <textarea id="bio" name="bio" required></textarea><br>
+
+        <button type="submit">Create</button>
+    </form>
+    {{with .Error}} <p>{{.Error}}</p> {{end}}
+</body>
+
+</html>
