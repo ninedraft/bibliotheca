@@ -1,0 +1,85 @@
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --font-size-base: 16px;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.page-title {
+    font-size: calc(var(--font-size-base) * 2.25);
+    margin-bottom: calc(var(--font-size-base) * 1.25);
+}
+
+.nav-link {
+    display: inline-block;
+    margin-right: calc(var(--font-size-base) * 0.625);
+    font-size: calc(var(--font-size-base) * 1.125);
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+.search-form {
+    margin-bottom: calc(var(--font-size-base) * 1.25);
+}
+
+.search-input {
+    display: block;
+    width: 100%;
+    padding: calc(var(--font-size-base) * 0.625);
+    font-size: var(--font-size-base);
+    border: 1px solid var(--secondary-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.search-button {
+    display: inline-block;
+    padding: calc(var(--font-size-base) * 0.625) calc(var(--font-size-base) * 1.25);
+    font-size: var(--font-size-base);
+    color: #fff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: calc(var(--font-size-base) * 1.25);
+}
+
+.table th {
+    padding: calc(var(--font-size-base) * 0.625);
+    font-size: calc(var(--font-size-base) * 1.125);
+    text-align: left;
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+.table td {
+    padding: calc(var(--font-size-base) * 0.625);
+    font-size: var(--font-size-base);
+    border-bottom: 1px solid var(--secondary-color);
+}
+
+.table td.authors {
+    white-space: nowrap;
+}
+
+.author-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.author-list li {
+    display: inline-block;
+    margin-right: calc(var(--font-size-base) * 0.625);
+    font-size: var(--font-size-base);
+    color: var(--secondary-color);
+}

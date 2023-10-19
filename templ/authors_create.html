@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Create Author</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Create Author</h1>
+        <a href="/books">Books</a>
+        <a href="/authors">Authors</a>
+        <form method="POST" action="/authors">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" class="form-control" required><br>
+
+            <label for="bio">Bio:</label>
+            <textarea id="bio" name="bio" class="form-control" required></textarea><br>
+
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+        {{with .Error}} <p>{{.Error}}</p> {{end}}
+    </div>
+</body>
+
+</html>

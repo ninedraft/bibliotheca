@@ -4,6 +4,8 @@ import (
 	"context"
 	dbsql "database/sql"
 	"embed"
+	"errors"
+	"flag"
 	"html/template"
 	"log"
 	"net/http"
@@ -25,6 +27,10 @@ import (
 )
 
 func main() {
+	addr := "localhost:8080"
+	flag.StringVar(&addr, "addr", addr, "server address")
+	flag.Parse()
+
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 	defer cancel()
 
@@ -62,7 +68,6 @@ func main() {
 
 	srv.routes(mux)
 
-	const addr = "localhost:8080"
 	log.Printf("starting server at %s", addr)
 	server := &http.Server{
 		ReadHeaderTimeout: 5 * time.Second,
@@ -76,13 +81,19 @@ func main() {
 		_ = server.Shutdown(context.Background())
 	}()
 
-	_ = server.ListenAndServe()
+	errServe := server.ListenAndServe()
+	if errServe != nil && !errors.Is(errServe, http.ErrServerClosed) {
+		panic("server: " + errServe.Error())
+	}
 }
 
 var (
-	//go:embed assets/*
+	//go:embed static/*
+	static embed.FS
+
+	//go:embed templ/*
 	assetsFS embed.FS
-	assets   = template.Must(template.ParseFS(assetsFS, "assets/*"))
+	assets   = template.Must(template.ParseFS(assetsFS, "templ/*.html"))
 )
 
 type service struct {
@@ -90,6 +101,7 @@ type service struct {
 }
 
 func (srv *service) routes(mux chi.Router) {
+	mux.Handle("/static/*", http.FileServer(http.FS(static)))
 	mux.Route("/books", func(r chi.Router) {
 		r.Get("/", srv.getBooks)
 		r.Post("/", srv.createBook)
@@ -97,9 +109,9 @@ func (srv *service) routes(mux chi.Router) {
 	})
 
 	mux.Route("/authors", func(r chi.Router) {
-		mux.Get("/", srv.listAuthors)
-		mux.Post("/", srv.createAuthor)
-		mux.Get("/new", srv.getAuthorForm)
+		r.Get("/", srv.listAuthors)
+		r.Post("/", srv.createAuthor)
+		r.Get("/new", srv.getAuthorForm)
 	})
 }
 
