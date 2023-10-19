@@ -230,14 +230,12 @@ func (srv *service) createBook(w http.ResponseWriter, r *http.Request) {
 	var book bookForm
 	errBind := binder.Decode(&book, r.PostForm)
 	if errBind != nil {
-		next := url.Values{"error": {errBind.Error()}}
-		http.Redirect(w, r, "/books/new?"+next.Encode(), http.StatusSeeOther)
+		withError(w, r, "/books/new", errBind)
 		return
 	}
 
 	if book.WrittenAt.After(time.Now()) {
-		next := url.Values{"error": {"book written in future"}}
-		http.Redirect(w, r, "/books/new?error="+next.Encode(), http.StatusSeeOther)
+		withError(w, r, "/books/new", errors.New("book written in future"))
 		return
 	}
 
@@ -283,7 +281,7 @@ func (srv *service) createAuthor(w http.ResponseWriter, r *http.Request) {
 	var form authorForm
 	errForm := binder.Decode(&form, r.PostForm)
 	if errForm != nil {
-		http.Redirect(w, r, "/authors/new?error="+errForm.Error(), http.StatusSeeOther)
+		withError(w, r, "/authors/new", errForm)
 		return
 	}
 
@@ -321,4 +319,19 @@ func logMW(next http.Handler) http.Handler {
 		next.ServeHTTP(rw, req)
 	}
 	return handle
+}
+
+func withError(rw http.ResponseWriter, req *http.Request, to string, err error) {
+	if err == nil {
+		return
+	}
+
+	dst := &url.URL{
+		Path: to,
+		RawQuery: url.Values{
+			"error": {err.Error()},
+		}.Encode(),
+	}
+
+	http.Redirect(rw, req, dst.String(), http.StatusSeeOther)
 }
